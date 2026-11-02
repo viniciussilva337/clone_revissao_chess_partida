@@ -14,7 +14,9 @@ Revisão de partidas do chess.com no estilo "Game Review" — **de graça** e ro
   a melhor linha e a continuação esperada.
 - Identifica a **abertura** (base de dados do Lichess, ~3800 posições).
 
-Atalhos: `←` `→` navegam, `Home`/`End` vão pro início/fim, `F` gira o tabuleiro.
+Atalhos: `←` `→` navegam, `Home`/`End` vão pro início/fim, `F` gira o tabuleiro, `M` liga/desliga o som.
+
+Os sons (lance, captura, roque, xeque, promoção e fim de jogo) são sintetizados na hora com a Web Audio API — não usamos os áudios do chess.com, que são deles.
 
 ## Como usar
 

@@ -1,5 +1,6 @@
 import { Chessground } from '../vendor/chessground/chessground.min.js';
 import { Engine } from './engine.js';
+import { playMove, isEnabled, setEnabled } from './sounds.js';
 import { fetchRecentGames, RESULT_REASON, TIME_CLASS } from './chesscom.js';
 import {
   CATEGORIES, SUMMARY_ORDER, parseGame, buildReview, formatEval, pvToSan,
@@ -314,10 +315,16 @@ function updateGraphCursor() {
 function goTo(ply) {
   const { positions } = state.game;
   ply = Math.max(0, Math.min(positions.length - 1, ply));
+  const changed = ply !== state.ply;
   state.ply = ply;
   const pos = positions[ply];
   const move = ply > 0 ? (state.review?.moves || state.game.moves)[ply - 1] : null;
   const turn = pos.fen.split(' ')[1] === 'w' ? 'white' : 'black';
+  if (changed && move) {
+    const last = ply === positions.length - 1;
+    const result = state.game.headers.Result;
+    playMove(move.san, last && result && result !== '*');
+  }
 
   const shapes = [];
   if (move && move.category) {
@@ -447,6 +454,18 @@ $('#btn-next').addEventListener('click', () => goTo(state.ply + 1));
 $('#btn-last').addEventListener('click', () => goTo(Infinity));
 $('#btn-flip').addEventListener('click', flip);
 
+const soundBtn = $('#btn-sound');
+function renderSoundBtn() {
+  soundBtn.textContent = isEnabled() ? '🔊' : '🔇';
+  soundBtn.title = isEnabled() ? 'Desligar som (M)' : 'Ligar som (M)';
+}
+function toggleSound() {
+  setEnabled(!isEnabled());
+  renderSoundBtn();
+}
+soundBtn.addEventListener('click', toggleSound);
+renderSoundBtn();
+
 function flip() {
   state.orientation = state.orientation === 'white' ? 'black' : 'white';
   renderPlayers();
@@ -461,6 +480,7 @@ document.addEventListener('keydown', (e) => {
   else if (e.key === 'Home' || e.key === 'ArrowUp') goTo(0);
   else if (e.key === 'End' || e.key === 'ArrowDown') goTo(Infinity);
   else if (e.key === 'f' || e.key === 'F') flip();
+  else if (e.key === 'm' || e.key === 'M') toggleSound();
   else return;
   e.preventDefault();
 });
