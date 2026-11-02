@@ -14,7 +14,19 @@ Revisão de partidas do chess.com no estilo "Game Review" — **de graça** e ro
   a melhor linha e a continuação esperada.
 - Identifica a **abertura** (base de dados do Lichess, ~3800 posições).
 
-Atalhos: `←` `→` navegam, `Home`/`End` vão pro início/fim, `F` gira o tabuleiro, `M` liga/desliga o som.
+### Problemas (treino de tática)
+
+Na aba **Problemas**:
+- **🎲 Aleatórios (Lichess)**: problemas da [API pública do Lichess](https://lichess.org/api#tag/Puzzles), com filtro por
+  tema (mate em 1/2/3, garfo, cravada, espeto, peça pendurada, ataque descoberto…) e dificuldade.
+  Você ganha/perde pontos num rating de problemas guardado no navegador, e tem sequência de acertos.
+- **🎯 Meus erros**: problemas criados a partir dos **seus** erros e capivaradas no chess.com. Clique em
+  "Buscar erros nas minhas partidas" (analisa as últimas 5/10/20 partidas) — e toda partida que você revisa
+  na aba Revisão também gera problemas. Vale qualquer lance tão bom quanto o do motor. Os que você erra voltam primeiro.
+
+Atalhos nos problemas: `H` dica, `Enter` próximo.
+
+Atalhos na revisão: `←` `→` navegam, `Home`/`End` vão pro início/fim, `F` gira o tabuleiro, `M` liga/desliga o som.
 
 Sons: em **Configurações → Sons do tabuleiro** dá pra escolher entre Madeira (padrão), Piano, 8-bit, Futurista,
 Sintetizado ou **Personalizado** — coloque seus próprios .mp3 (ex.: do Pixabay) em `sounds/custom/` (veja `sounds/custom/LEIAME.md`).

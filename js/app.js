@@ -2,6 +2,8 @@ import { Chessground } from '../vendor/chessground/chessground.min.js';
 import { Engine } from './engine.js';
 import { playMove, isEnabled, setEnabled, preload as preloadSounds, SOUND_SETS, getSet, setSet } from './sounds.js';
 import { fetchRecentGames, RESULT_REASON, TIME_CLASS } from './chesscom.js';
+import { initPuzzles } from './puzzles.js';
+import { addFromReview } from './mistakes.js';
 import {
   CATEGORIES, SUMMARY_ORDER, parseGame, buildReview, formatEval, pvToSan,
 } from './review.js';
@@ -15,6 +17,7 @@ const state = {
   orientation: 'white',
   meta: null,      // dados do chess.com (se veio de lá)
   runId: 0,
+  reviewOpen: false,
 };
 
 let engine = null;
@@ -113,9 +116,8 @@ $('#pgn-form').addEventListener('submit', (e) => {
 $('#btn-back').addEventListener('click', () => {
   state.runId++;
   engine?.stop();
-  $('#review').classList.add('hidden');
-  $('#picker').classList.remove('hidden');
-  document.body.classList.remove('reviewing');
+  state.reviewOpen = false;
+  route();
   window.scrollTo({ top: 0 });
 });
 
@@ -133,9 +135,8 @@ function startReview(pgn, meta) {
   state.ply = 0;
   state.orientation = meta?.myColor === 'b' ? 'black' : 'white';
 
-  $('#picker').classList.add('hidden');
-  $('#review').classList.remove('hidden');
-  document.body.classList.add('reviewing');
+  state.reviewOpen = true;
+  route();
   $('#progress-card').classList.remove('hidden');
   $('#summary-card').classList.add('hidden');
   const link = $('#btn-open');
@@ -182,6 +183,18 @@ async function analyze(runId) {
   const openings = await loadOpenings();
   if (runId !== state.runId) return;
   state.review = buildReview(state.game, openings);
+  const added = $('#pz-added');
+  added.textContent = '';
+  if (state.meta) {
+    const n = addFromReview(state.review, {
+      color: state.meta.myColor,
+      gameId: state.meta.url,
+      opponent: state.meta.opponent.name,
+      date: state.meta.endTime ? state.meta.endTime.toISOString() : null,
+      url: state.meta.url,
+    });
+    if (n) added.innerHTML = `🎯 ${n} ${n === 1 ? 'erro seu virou problema' : 'erros seus viraram problemas'} pra treinar em <a href="#problemas">Problemas → Meus erros</a>.`;
+  }
   $('#progress-card').classList.add('hidden');
   $('#summary-card').classList.remove('hidden');
   renderPlayers();
@@ -498,6 +511,24 @@ document.addEventListener('keydown', (e) => {
   else return;
   e.preventDefault();
 });
+
+/* ---------------- Navegação (Revisão / Problemas) ---------------- */
+
+function route() {
+  const view = location.hash === '#problemas' ? 'puzzles' : 'review';
+  document.querySelectorAll('.nav a').forEach((a) => a.classList.toggle('active', a.dataset.view === view));
+  $('#puzzles').classList.toggle('hidden', view !== 'puzzles');
+  $('#picker').classList.toggle('hidden', view !== 'review' || state.reviewOpen);
+  $('#review').classList.toggle('hidden', view !== 'review' || !state.reviewOpen);
+  document.body.classList.toggle('compact', view === 'puzzles' || state.reviewOpen);
+  if (view === 'puzzles') initPuzzles();
+  else if (state.reviewOpen) board.redrawAll();
+}
+window.addEventListener('hashchange', () => {
+  route();
+  window.scrollTo({ top: 0 });
+});
+route();
 
 // Exposto para depuração no console.
 window.__review = state;

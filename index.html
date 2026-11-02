@@ -13,7 +13,13 @@
 </head>
 <body>
   <header class="topbar">
-    <h1>♞ Revisão de Partidas</h1>
+    <div class="topbar-row">
+      <h1>♞ Revisão de Partidas</h1>
+      <nav class="nav">
+        <a href="#" data-view="review" class="active">Revisão</a>
+        <a href="#problemas" data-view="puzzles">Problemas</a>
+      </nav>
+    </div>
     <p class="tagline">Grátis. Roda no seu navegador com o Stockfish 18.</p>
   </header>
 
@@ -55,7 +61,7 @@
       </details>
     </section>
 
-    <section id="review" class="hidden">
+    <section id="review" class="layout hidden">
       <div class="board-col">
         <div class="player" id="player-top"></div>
         <div class="board-wrap">
@@ -106,11 +112,79 @@
         <div class="card" id="summary-card">
           <div class="opening" id="opening"></div>
           <table class="summary" id="summary"></table>
+          <p class="hint" id="pz-added"></p>
         </div>
 
         <div class="row">
           <button class="btn" id="btn-back">← Escolher outra partida</button>
           <a class="btn" id="btn-open" target="_blank" rel="noopener">Abrir no chess.com</a>
+        </div>
+      </div>
+    </section>
+    <section id="puzzles" class="layout hidden">
+      <div class="board-col">
+        <div class="player" id="pz-turn"></div>
+        <div class="board-wrap">
+          <div class="board" id="pz-board"></div>
+        </div>
+        <div class="controls">
+          <button class="btn" id="pz-hint" title="Dica (H)">💡 Dica</button>
+          <button class="btn" id="pz-solution">👁 Solução</button>
+          <button class="btn" id="pz-retry" title="Recomeçar este problema">↺</button>
+          <button class="btn primary" id="pz-next" title="Próximo (Enter)">Próximo ▶</button>
+        </div>
+      </div>
+
+      <div class="side-col">
+        <div class="card pz-status idle" id="pz-status">Carregando…</div>
+
+        <div class="card">
+          <div class="seg" role="tablist">
+            <button class="seg-btn" data-source="lichess">🎲 Aleatórios (Lichess)</button>
+            <button class="seg-btn" data-source="mine">🎯 Meus erros</button>
+          </div>
+
+          <div id="pz-lichess-opts" class="pz-opts">
+            <div class="grid2">
+              <div>
+                <label for="pz-theme">Tema</label>
+                <select id="pz-theme"></select>
+              </div>
+              <div>
+                <label for="pz-difficulty">Dificuldade</label>
+                <select id="pz-difficulty"></select>
+              </div>
+            </div>
+          </div>
+
+          <div id="pz-mine-opts" class="pz-opts hidden">
+            <p class="muted small" id="pz-mine-count"></p>
+            <div class="row">
+              <select id="pz-scan-count" class="auto" aria-label="Quantas partidas">
+                <option value="5">últimas 5 partidas</option>
+                <option value="10" selected>últimas 10 partidas</option>
+                <option value="20">últimas 20 partidas</option>
+              </select>
+              <button class="btn primary" id="pz-scan">Buscar erros nas minhas partidas</button>
+            </div>
+            <div id="pz-scan-progress" class="hidden">
+              <div class="progress mt"><div id="pz-scan-bar"></div></div>
+              <p class="status" id="pz-scan-status"></p>
+            </div>
+            <p class="hint">Os erros das partidas que você revisar na aba Revisão também viram problemas aqui.</p>
+            <button class="link danger hidden" id="pz-clear">Apagar meus problemas</button>
+          </div>
+        </div>
+
+        <div class="card" id="pz-info"></div>
+
+        <div class="card">
+          <div class="pz-stats">
+            <div><span class="big" id="pz-rating">1500</span> <span id="pz-delta" class="delta"></span><br><span class="muted small">Seu rating de problemas</span></div>
+            <div><span class="big" id="pz-streak">0</span><br><span class="muted small">Sequência (recorde <span id="pz-best">0</span>)</span></div>
+            <div><span class="big ok" id="pz-solved">0</span><br><span class="muted small">Acertos</span></div>
+            <div><span class="big bad" id="pz-failed">0</span><br><span class="muted small">Erros</span></div>
+          </div>
         </div>
       </div>
     </section>
@@ -122,7 +196,8 @@
       Tabuleiro: <a href="https://github.com/lichess-org/chessground" target="_blank" rel="noopener">Chessground</a> ·
       Regras: <a href="https://github.com/jhlywa/chess.js" target="_blank" rel="noopener">chess.js</a> ·
       Aberturas: <a href="https://github.com/lichess-org/chess-openings" target="_blank" rel="noopener">lichess chess-openings</a> ·
-      Sons: <a href="https://github.com/Enigmahack" target="_blank" rel="noopener">Enigmahack</a> (AGPLv3+).
+      Sons: <a href="https://github.com/Enigmahack" target="_blank" rel="noopener">Enigmahack</a> (AGPLv3+) ·
+      Problemas: <a href="https://lichess.org/training" target="_blank" rel="noopener">Lichess</a>.
       Projeto independente, sem vínculo com o chess.com.
     </p>
   </footer>
