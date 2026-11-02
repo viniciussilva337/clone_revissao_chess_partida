@@ -27,7 +27,8 @@ const MATE_CP = 100000;
 /** Converte um score UCI em centipeões (mate vira um número enorme). */
 export function scoreToCp(score) {
   if (score.mate !== undefined) {
-    if (score.mate === 0) return -MATE_CP; // quem joga levou mate
+    // mate 0: posição de xeque-mate. `winner` = do ponto de vista de quem deu o mate.
+    if (score.mate === 0) return score.winner ? MATE_CP : -MATE_CP;
     return Math.sign(score.mate) * (MATE_CP - Math.abs(score.mate) * 100);
   }
   return score.cp;
@@ -65,6 +66,7 @@ export function formatEval(score) {
 }
 
 function negate(score) {
+  if (score.mate === 0) return score.winner ? { mate: 0 } : { mate: 0, winner: true };
   return score.mate !== undefined ? { mate: -score.mate } : { cp: -score.cp };
 }
 
@@ -238,7 +240,7 @@ export function buildReview(game, openings = {}) {
     else playedScore = negate(positionScore(after));
     const winAfter = winPercent(scoreToCp(playedScore));
     const loss = Math.max(0, winBefore - winAfter);
-    const isBest = best && best.pv[0] === mv.uci;
+    const isBest = (best && best.pv[0] === mv.uci) || after.terminal === 'checkmate';
 
     // Teoria (livro de aberturas).
     const book = openings[epd(after.fen)];
