@@ -16,7 +16,9 @@ Revisão de partidas do chess.com no estilo "Game Review" — **de graça** e ro
 
 Atalhos: `←` `→` navegam, `Home`/`End` vão pro início/fim, `F` gira o tabuleiro, `M` liga/desliga o som.
 
-Os sons (lance, captura, roque, xeque, promoção e fim de jogo) são sintetizados na hora com a Web Audio API — não usamos os áudios do chess.com, que são deles.
+Sons: em **Configurações → Sons do tabuleiro** dá pra escolher entre Madeira (padrão), Piano, 8-bit, Futurista,
+Sintetizado ou **Personalizado** — coloque seus próprios .mp3 (ex.: do Pixabay) em `sounds/custom/` (veja `sounds/custom/LEIAME.md`).
+Não usamos os áudios do chess.com, que são deles.
 
 ## Como usar
 
@@ -87,6 +89,7 @@ vendor/               Stockfish.js 18 lite, Chessground 9, chess.js 1.4
 - [Chessground](https://github.com/lichess-org/chessground) — GPLv3
 - [chess.js](https://github.com/jhlywa/chess.js) — BSD-2
 - [lichess-org/chess-openings](https://github.com/lichess-org/chess-openings) — CC0
+- Sons em `sounds/sfx`, `sounds/piano`, `sounds/nes` e `sounds/futuristic`: [Enigmahack](https://github.com/Enigmahack), via [lila](https://github.com/lichess-org/lila) — AGPLv3+
 
-Como usa componentes GPLv3, este projeto também é distribuído sob a **GPLv3** (ver `LICENSE`).
+Como usa componentes GPLv3, este projeto também é distribuído sob a **GPLv3** (ver `LICENSE`); os arquivos de som continuam sob AGPLv3+.
 Projeto independente, sem vínculo com o chess.com.

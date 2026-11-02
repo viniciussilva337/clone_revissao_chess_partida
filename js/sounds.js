@@ -1,11 +1,40 @@
-// Sons de xadrez sintetizados na hora com a Web Audio API (sem arquivos de áudio).
-// Imitam o "toc" de peça de madeira no tabuleiro.
+// Sons do tabuleiro.
+// - Conjuntos gravados em sounds/<conjunto>/*.mp3 (tocados via Web Audio, sem atraso).
+// - "Sintetizado": gerado na hora, sem arquivos.
+// - "Personalizado": coloque seus próprios arquivos em sounds/custom/ (ex.: baixados do Pixabay).
+
+export const SOUND_SETS = {
+  sfx: 'Madeira (padrão)',
+  piano: 'Piano',
+  nes: '8-bit (NES)',
+  futuristic: 'Futurista',
+  synth: 'Sintetizado',
+  custom: 'Personalizado (sounds/custom)',
+};
+
+// Nome do som -> arquivos tentados, em ordem (o primeiro que existir é usado).
+const FILES = {
+  move: ['move'],
+  capture: ['capture', 'move'],
+  castle: ['castle', 'move'],
+  check: ['check', 'move'],
+  promote: ['promote', 'move'],
+  end: ['end'],
+};
 
 let ctx = null;
 let enabled = true;
+let currentSet = 'sfx';
 try {
   enabled = localStorage.getItem('sound') !== 'off';
+  const saved = localStorage.getItem('soundSet');
+  if (saved && SOUND_SETS[saved]) currentSet = saved;
 } catch { /* sem localStorage */ }
+
+// Arquivos que existem nos conjuntos que vêm com o site (evita requisições 404).
+const BUILTIN_FILES = ['move', 'capture', 'check', 'end'];
+
+const buffers = new Map(); // "set/arquivo" -> Promise<AudioBuffer|null>
 
 function audio() {
   if (!ctx) {
@@ -15,6 +44,36 @@ function audio() {
   }
   if (ctx.state === 'suspended') ctx.resume();
   return ctx;
+}
+
+function loadBuffer(set, file) {
+  const key = `${set}/${file}`;
+  if (set !== 'custom' && !BUILTIN_FILES.includes(file)) return Promise.resolve(null);
+  if (!buffers.has(key)) {
+    const ac = audio();
+    const p = !ac
+      ? Promise.resolve(null)
+      : fetch(new URL(`../sounds/${key}.mp3`, import.meta.url))
+        .then((r) => (r.ok ? r.arrayBuffer() : null))
+        .then((data) => (data ? new Promise((res, rej) => ac.decodeAudioData(data, res, rej)) : null))
+        .catch(() => null);
+    buffers.set(key, p);
+  }
+  return buffers.get(key);
+}
+
+async function bufferFor(set, name) {
+  for (const file of FILES[name]) {
+    const buf = await loadBuffer(set, file);
+    if (buf) return buf;
+  }
+  return null;
+}
+
+/** Pré-carrega o conjunto atual (chamado quando a revisão abre). */
+export function preload() {
+  if (currentSet === 'synth' || !audio()) return;
+  for (const name of Object.keys(FILES)) bufferFor(currentSet, name);
 }
 
 let noiseBuffer = null;
@@ -95,11 +154,22 @@ const SOUNDS = {
   },
 };
 
-export function play(name) {
+function synth(name) {
+  const ac = audio();
+  if (ac && SOUNDS[name]) SOUNDS[name](ac, ac.currentTime + 0.005);
+}
+
+export async function play(name) {
   if (!enabled) return;
   const ac = audio();
-  if (!ac || !SOUNDS[name]) return;
-  SOUNDS[name](ac, ac.currentTime + 0.005);
+  if (!ac) return;
+  if (currentSet === 'synth') return synth(name);
+  const buf = await bufferFor(currentSet, name);
+  if (!buf) return synth(name); // arquivo não encontrado: cai no sintetizado
+  const src = ac.createBufferSource();
+  src.buffer = buf;
+  src.connect(ac.destination);
+  src.start();
 }
 
 /** Escolhe o som certo a partir do SAN do lance. */
@@ -112,6 +182,17 @@ export function playMove(san, gameOver = false) {
   else if (/^O-O/.test(san)) play('castle');
   else if (/x/.test(san)) play('capture');
   else play('move');
+}
+
+export function getSet() {
+  return currentSet;
+}
+
+export function setSet(name) {
+  if (!SOUND_SETS[name]) return;
+  currentSet = name;
+  try { localStorage.setItem('soundSet', name); } catch { /* ignora */ }
+  preload();
 }
 
 export function isEnabled() {

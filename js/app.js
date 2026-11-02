@@ -1,6 +1,6 @@
 import { Chessground } from '../vendor/chessground/chessground.min.js';
 import { Engine } from './engine.js';
-import { playMove, isEnabled, setEnabled } from './sounds.js';
+import { playMove, isEnabled, setEnabled, preload as preloadSounds, SOUND_SETS, getSet, setSet } from './sounds.js';
 import { fetchRecentGames, RESULT_REASON, TIME_CLASS } from './chesscom.js';
 import {
   CATEGORIES, SUMMARY_ORDER, parseGame, buildReview, formatEval, pvToSan,
@@ -25,6 +25,9 @@ const board = Chessground($('#board'), {
   animation: { duration: 180 },
   drawable: { enabled: true, visible: true },
 });
+
+// Mantém o tabuleiro certo quando o tamanho muda (janela, rotação do celular, etc.).
+new ResizeObserver(() => board.redrawAll()).observe($('#board'));
 
 function loadOpenings() {
   openingsPromise ??= fetch('data/openings.json').then((r) => r.json()).catch(() => ({}));
@@ -112,6 +115,7 @@ $('#btn-back').addEventListener('click', () => {
   engine?.stop();
   $('#review').classList.add('hidden');
   $('#picker').classList.remove('hidden');
+  document.body.classList.remove('reviewing');
   window.scrollTo({ top: 0 });
 });
 
@@ -121,6 +125,7 @@ function startReview(pgn, meta) {
   const game = parseGame(pgn); // lança erro se o PGN for inválido
   if (!game.moves.length) throw new Error('a partida não tem lances.');
 
+  preloadSounds();
   const runId = ++state.runId;
   state.game = game;
   state.review = null;
@@ -130,6 +135,7 @@ function startReview(pgn, meta) {
 
   $('#picker').classList.add('hidden');
   $('#review').classList.remove('hidden');
+  document.body.classList.add('reviewing');
   $('#progress-card').classList.remove('hidden');
   $('#summary-card').classList.add('hidden');
   const link = $('#btn-open');
@@ -465,6 +471,14 @@ function toggleSound() {
 }
 soundBtn.addEventListener('click', toggleSound);
 renderSoundBtn();
+
+const soundSet = $('#sound-set');
+soundSet.innerHTML = Object.entries(SOUND_SETS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+soundSet.value = getSet();
+soundSet.addEventListener('change', () => {
+  setSet(soundSet.value);
+  playMove('e4');
+});
 
 function flip() {
   state.orientation = state.orientation === 'white' ? 'black' : 'white';

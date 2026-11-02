@@ -50,6 +50,8 @@
           <option value="18">Profunda (profundidade 18)</option>
           <option value="21">Muito profunda (profundidade 21, lenta)</option>
         </select>
+        <label for="sound-set" class="mt">Sons do tabuleiro</label>
+        <select id="sound-set"></select>
       </details>
     </section>
 
@@ -97,13 +99,13 @@
           <svg id="graph" viewBox="0 0 600 120" preserveAspectRatio="none" role="img" aria-label="Gráfico de avaliação"></svg>
         </div>
 
+        <div class="card">
+          <ol class="moves" id="moves"></ol>
+        </div>
+
         <div class="card" id="summary-card">
           <div class="opening" id="opening"></div>
           <table class="summary" id="summary"></table>
-        </div>
-
-        <div class="card">
-          <ol class="moves" id="moves"></ol>
         </div>
 
         <div class="row">
@@ -119,7 +121,8 @@
       Motor: <a href="https://github.com/nmrugg/stockfish.js" target="_blank" rel="noopener">Stockfish.js</a> (GPLv3) ·
       Tabuleiro: <a href="https://github.com/lichess-org/chessground" target="_blank" rel="noopener">Chessground</a> ·
       Regras: <a href="https://github.com/jhlywa/chess.js" target="_blank" rel="noopener">chess.js</a> ·
-      Aberturas: <a href="https://github.com/lichess-org/chess-openings" target="_blank" rel="noopener">lichess chess-openings</a>.
+      Aberturas: <a href="https://github.com/lichess-org/chess-openings" target="_blank" rel="noopener">lichess chess-openings</a> ·
+      Sons: <a href="https://github.com/Enigmahack" target="_blank" rel="noopener">Enigmahack</a> (AGPLv3+).
       Projeto independente, sem vínculo com o chess.com.
     </p>
   </footer>
