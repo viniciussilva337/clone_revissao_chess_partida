@@ -26,6 +26,9 @@ Na aba **Problemas**:
 
 Atalhos nos problemas: `H` dica, `Enter` próximo.
 
+Setas: clique com o **botão direito** e arraste pra desenhar setas (ou clique numa casa pra marcar um círculo), na revisão e nos problemas.
+Setas de lance de cavalo aparecem em **L**.
+
 Atalhos na revisão: `←` `→` navegam, `Home`/`End` vão pro início/fim, `F` gira o tabuleiro, `M` liga/desliga o som.
 
 Sons: em **Configurações → Sons do tabuleiro** dá pra escolher entre Madeira (padrão), Piano, 8-bit, Futurista,

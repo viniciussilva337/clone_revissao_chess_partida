@@ -1,6 +1,7 @@
 // Treino de problemas: aleatórios do Lichess ou gerados a partir dos seus erros.
 
 import { Chessground } from '../vendor/chessground/chessground.min.js';
+import { enableKnightArrows } from './knight-arrows.js';
 import { Chess } from '../vendor/chessjs/chess.js';
 import { Engine } from './engine.js';
 import { playMove, play, preload as preloadSounds } from './sounds.js';
@@ -78,6 +79,7 @@ export function initPuzzles() {
     drawable: { enabled: true, visible: true },
   });
   new ResizeObserver(() => board.redrawAll()).observe($('#pz-board'));
+  enableKnightArrows($('#pz-board'));
 
   const theme = $('#pz-theme');
   theme.innerHTML = Object.entries(THEMES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
