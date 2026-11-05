@@ -7,12 +7,12 @@
 const BRUSHES = {
   // Os nomes vêm do Chessground (green = padrão, red = Shift/Ctrl, blue = Alt, yellow = Alt+Shift);
   // só trocamos as cores.
-  green: { key: 'g', color: '#ffaa00', opacity: 0.8, lineWidth: 14 },
-  red: { key: 'r', color: '#f0524a', opacity: 0.8, lineWidth: 14 },
-  blue: { key: 'b', color: '#48b2f0', opacity: 0.8, lineWidth: 14 },
-  yellow: { key: 'y', color: '#86c13f', opacity: 0.8, lineWidth: 14 },
+  green: { key: 'g', color: '#ffaa00', opacity: 0.8, lineWidth: 9 },
+  red: { key: 'r', color: '#f0524a', opacity: 0.8, lineWidth: 9 },
+  blue: { key: 'b', color: '#48b2f0', opacity: 0.8, lineWidth: 9 },
+  yellow: { key: 'y', color: '#86c13f', opacity: 0.8, lineWidth: 9 },
   // Seta do melhor lance / dica (desenhada pelo site).
-  best: { key: 'bst', color: '#81b64c', opacity: 0.85, lineWidth: 14 },
+  best: { key: 'bst', color: '#81b64c', opacity: 0.85, lineWidth: 9 },
 };
 
 export function setupDrawing(board, boardEl) {
