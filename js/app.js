@@ -1,5 +1,6 @@
 import { Chessground } from '../vendor/chessground/chessground.min.js';
 import { enableKnightArrows } from './knight-arrows.js';
+import { enableModifierDrawing } from './draw-shortcuts.js';
 import { Engine } from './engine.js';
 import { playMove, isEnabled, setEnabled, preload as preloadSounds, SOUND_SETS, getSet, setSet } from './sounds.js';
 import { fetchRecentGames, RESULT_REASON, TIME_CLASS } from './chesscom.js';
@@ -37,6 +38,7 @@ const board = Chessground($('#board'), {
 // Mantém o tabuleiro certo quando o tamanho muda (janela, rotação do celular, etc.).
 new ResizeObserver(() => board.redrawAll()).observe($('#board'));
 enableKnightArrows($('#board'));
+enableModifierDrawing($('#board'));
 
 function loadOpenings() {
   openingsPromise ??= fetch('data/openings.json').then((r) => r.json()).catch(() => ({}));

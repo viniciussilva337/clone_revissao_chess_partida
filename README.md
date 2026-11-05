@@ -27,6 +27,7 @@ Na aba **Problemas**:
 Atalhos nos problemas: `H` dica, `Enter` próximo.
 
 Setas: clique com o **botão direito** e arraste pra desenhar setas (ou clique numa casa pra marcar um círculo), na revisão e nos problemas.
+No notebook dá pra usar **Cmd + clicar e arrastar** (Mac), **Ctrl + clicar e arrastar** (Windows/Linux) ou **Shift + clicar e arrastar**.
 Setas de lance de cavalo aparecem em **L**.
 
 Atalhos na revisão: `←` `→` navegam, `Home`/`End` vão pro início/fim, `F` gira o tabuleiro, `M` liga/desliga o som.
