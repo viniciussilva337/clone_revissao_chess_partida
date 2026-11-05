@@ -4,6 +4,7 @@ import { Chessground } from '../vendor/chessground/chessground.min.js';
 import { enableKnightArrows } from './knight-arrows.js';
 import { enableModifierDrawing } from './draw-shortcuts.js';
 import { setupDrawing } from './board-draw.js';
+import { enableSmoothDrawing } from './smooth-arrows.js';
 import { Chess } from '../vendor/chessjs/chess.js';
 import { Engine } from './engine.js';
 import { playMove, play, preload as preloadSounds } from './sounds.js';
@@ -84,6 +85,7 @@ export function initPuzzles() {
   enableKnightArrows($('#pz-board'));
   enableModifierDrawing($('#pz-board'));
   setupDrawing(board, $('#pz-board'));
+  enableSmoothDrawing(board, $('#pz-board'));
 
   const theme = $('#pz-theme');
   theme.innerHTML = Object.entries(THEMES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');

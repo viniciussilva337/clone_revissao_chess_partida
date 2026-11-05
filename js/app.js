@@ -2,6 +2,7 @@ import { Chessground } from '../vendor/chessground/chessground.min.js';
 import { enableKnightArrows } from './knight-arrows.js';
 import { enableModifierDrawing } from './draw-shortcuts.js';
 import { setupDrawing } from './board-draw.js';
+import { enableSmoothDrawing } from './smooth-arrows.js';
 import { Engine } from './engine.js';
 import { playMove, isEnabled, setEnabled, preload as preloadSounds, SOUND_SETS, getSet, setSet } from './sounds.js';
 import { fetchRecentGames, RESULT_REASON, TIME_CLASS } from './chesscom.js';
@@ -41,6 +42,7 @@ new ResizeObserver(() => board.redrawAll()).observe($('#board'));
 enableKnightArrows($('#board'));
 enableModifierDrawing($('#board'));
 setupDrawing(board, $('#board'));
+enableSmoothDrawing(board, $('#board'));
 
 function loadOpenings() {
   openingsPromise ??= fetch('data/openings.json').then((r) => r.json()).catch(() => ({}));

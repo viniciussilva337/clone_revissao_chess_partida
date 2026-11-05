@@ -43,7 +43,14 @@ function bendLine(line) {
 
 /** Ativa as setas em L num tabuleiro do Chessground (o elemento onde ele foi montado). */
 export function enableKnightArrows(boardEl) {
-  const process = () => boardEl.querySelectorAll('svg.cg-shapes line').forEach(bendLine);
+  const process = () => {
+    boardEl.querySelectorAll('svg.cg-shapes line').forEach(bendLine);
+    // A seta provisória (enquanto você arrasta) é desenhada suave por smooth-arrows.js.
+    boardEl.querySelectorAll('svg.cg-shapes > g > g').forEach((g) => {
+      const current = (g.getAttribute('cgHash') || '').split(',').includes('true');
+      if (current) g.style.display = 'none';
+    });
+  };
   new MutationObserver(process).observe(boardEl, { childList: true, subtree: true });
   process();
 }
