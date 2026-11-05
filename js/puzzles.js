@@ -3,6 +3,7 @@
 import { Chessground } from '../vendor/chessground/chessground.min.js';
 import { enableKnightArrows } from './knight-arrows.js';
 import { enableModifierDrawing } from './draw-shortcuts.js';
+import { setupDrawing } from './board-draw.js';
 import { Chess } from '../vendor/chessjs/chess.js';
 import { Engine } from './engine.js';
 import { playMove, play, preload as preloadSounds } from './sounds.js';
@@ -82,6 +83,7 @@ export function initPuzzles() {
   new ResizeObserver(() => board.redrawAll()).observe($('#pz-board'));
   enableKnightArrows($('#pz-board'));
   enableModifierDrawing($('#pz-board'));
+  setupDrawing(board, $('#pz-board'));
 
   const theme = $('#pz-theme');
   theme.innerHTML = Object.entries(THEMES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
@@ -397,7 +399,7 @@ function hint() {
   if (pz.status !== 'playing' || !pz.puzzle) return;
   pz.clean = false;
   const exp = pz.puzzle.solution[pz.step];
-  board.set({ drawable: { autoShapes: [{ orig: exp.slice(0, 2), brush: 'green' }] } });
+  board.set({ drawable: { autoShapes: [{ orig: exp.slice(0, 2), brush: 'best' }] } });
   setStatus('playing', '💡 Dica: mexa a peça marcada.');
 }
 
@@ -418,7 +420,7 @@ function showSolution() {
     }
     const uci = sol[pz.step];
     applyMove(uci);
-    board.set({ drawable: { autoShapes: [{ orig: uci.slice(0, 2), dest: uci.slice(2, 4), brush: 'green' }] } });
+    board.set({ drawable: { autoShapes: [{ orig: uci.slice(0, 2), dest: uci.slice(2, 4), brush: 'best' }] } });
     pz.step++;
     setTimeout(stepPlay, 650);
   };

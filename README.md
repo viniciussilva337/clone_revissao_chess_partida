@@ -28,7 +28,8 @@ Atalhos nos problemas: `H` dica, `Enter` próximo.
 
 Setas: clique com o **botão direito** e arraste pra desenhar setas (ou clique numa casa pra marcar um círculo), na revisão e nos problemas.
 No notebook dá pra usar **Cmd + clicar e arrastar** (Mac), **Ctrl + clicar e arrastar** (Windows/Linux) ou **Shift + clicar e arrastar**.
-Setas de lance de cavalo aparecem em **L**.
+Setas de lance de cavalo aparecem em **L**. Clicar numa casa (botão direito ou Cmd/Ctrl) pinta a casa de vermelho; um clique normal apaga tudo.
+Cores alternativas como no chess.com: segure **Alt** (azul), **Shift + botão direito** (vermelho) ou **Alt + Shift + botão direito** (verde).
 
 Atalhos na revisão: `←` `→` navegam, `Home`/`End` vão pro início/fim, `F` gira o tabuleiro, `M` liga/desliga o som.
 

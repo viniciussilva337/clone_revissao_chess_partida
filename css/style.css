@@ -365,3 +365,7 @@ select.auto { width: auto; flex: 1; min-width: 150px; }
 .delta.up { color: var(--accent); }
 .delta.down { color: var(--danger); }
 #pz-scan-bar { height: 100%; width: 0; background: var(--accent); transition: width 0.2s; }
+
+/* Setas e casas marcadas no estilo do chess.com */
+.cg-wrap .cg-shapes { opacity: 1; }
+cg-board square.marked { background: rgba(235, 97, 80, 0.8); }
